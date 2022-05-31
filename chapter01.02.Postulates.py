@@ -151,7 +151,7 @@ class Postulates03(Scene):
         arrow02 = Arrow(dot01, dot02, buff=0, stroke_width=1, tip_length=0.2)
         self.play(FadeIn(arrow02))
         circle02 = Circle(radius=1)
-        self.play(Create(circle02), 
+        self.play(Create(circle02, rate_func=linear), 
                 Rotate(arrow02, about_point=ORIGIN, angle=2*PI, rate_func=linear), 
                 run_time=2)
         self.wait(2)
@@ -161,7 +161,7 @@ class Postulates03(Scene):
         arrow03 = Arrow(dot01, dot03, buff=0, stroke_width=1, tip_length=0.2)
         self.play(FadeIn(arrow03))
         circle03 = Circle(radius=2).rotate(90*DEGREES)
-        self.play(Create(circle03), 
+        self.play(Create(circle03, rate_func=linear), 
                 Rotate(arrow03, about_point=ORIGIN, angle=2*PI, rate_func=linear), 
                 run_time=3)
         self.wait(2)
