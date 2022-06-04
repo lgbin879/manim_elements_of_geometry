@@ -17,7 +17,20 @@ class chapter01Proposition01(Scene):
         Circle.set_default(color=WHITE)
         Text.set_default(font_size=30)
         Tex.set_default(font_size=25, tex_template=TexTemplateLibrary.ctex)
-        Polygon.set_default(stroke_color=ORANGE)
+        Polygon.set_default(stroke_color=PINK)
+
+        captions = [
+            "平面上有A，B两个点",
+            "以A为圆心，AB为半径作圆A",
+            "以B为圆心，BA为半径作圆B",
+            "圆A与圆B相交于点C",
+            "以A，B，C三点作一三角形",
+            "求证三角形ABC是等边三角形",
+            ]
+
+        text = [
+            Tex(i, font_size=35).to_edge(DOWN) for i in captions
+            ]
 
         ## Make objects
         title = Tex('几何原本第一卷命题1',
@@ -38,12 +51,14 @@ class chapter01Proposition01(Scene):
         self.add(dotB)
         self.wait()
         self.play(AnimationGroup(FadeIn(lableB), Indicate(dotB), lag_ratio=0))
+        self.play(Write(text[0]), run_time=1)
         self.wait()
 
         arrowA = Arrow(dotA, dotB, buff=0, stroke_width=2, tip_length=0.2)
         self.play(FadeIn(arrowA))
         self.add(circleA)
         self.play(Create(circleA, rate_func=linear), 
+                ReplacementTransform(text[0], text[1]),
                 Rotate(arrowA, about_point=dotA.get_center(), angle=2*PI, rate_func=linear), 
                 run_time=2)
         self.play(FadeOut(arrowA))
@@ -53,6 +68,7 @@ class chapter01Proposition01(Scene):
         self.play(FadeIn(arrowB))
         self.add(circleB)
         self.play(Create(circleB, rate_func=linear), 
+                ReplacementTransform(text[1], text[2]),
                 Rotate(arrowB, about_point=dotB.get_center(), angle=2*PI, rate_func=linear), 
                 run_time=2)
         self.play(FadeOut(arrowB))
@@ -63,7 +79,9 @@ class chapter01Proposition01(Scene):
         dotC = Dot(inter.get_top())
         lableC = Text("C").next_to(dotC, UP)
         self.add(dotC, lableC)
-        self.play(FadeIn(lableC), Indicate(dotC))
+        self.play(FadeIn(lableC), Indicate(dotC),
+                ReplacementTransform(text[2], text[3]),
+                )
         self.wait()
         self.add(lableD, lableE)
         self.play(FadeIn(lableD), FadeIn(lableE))
@@ -72,7 +90,9 @@ class chapter01Proposition01(Scene):
         triangle = Polygon(dotA.get_center(), dotB.get_center(), dotC.get_center(),
                 fill_opacity=0)
         self.add(triangle)
-        self.play(Create(triangle, rate_func=linear), run_time=2)
+        self.play(Create(triangle, rate_func=linear), 
+                ReplacementTransform(text[3], text[4]),
+                run_time=2)
         #  self.play(ShowPassingFlash(triangle))
         self.wait()
 
@@ -96,6 +116,7 @@ class chapter01Proposition01(Scene):
         self.add(lineBC)
         lableBC = Text("BC").next_to(eq2, RIGHT)
         self.play(ReplacementTransform(lineBC, lableBC))
+        self.play(ReplacementTransform(text[4], text[5]), run_time=1)
         self.wait()
 
         prove = Tex("证明", color=YELLOW, font_size=40).next_to(lableAC, UP)
